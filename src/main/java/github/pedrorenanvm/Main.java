@@ -82,9 +82,9 @@ public class Main {
     }
 
     public static void imprimirFuncionariosPorFuncaoMap (){
-        agruparFuncionariosPorMap().forEach((funcao, lista ) -> {
+        agruparFuncionariosPorMap().forEach((funcao, funcionario ) -> {
             System.out.println("\nFunção: "+funcao);
-            lista.forEach(System.out::println); // mesmo que fazer funcionario -> System.out.println(funcionario)
+            funcionario.forEach(System.out::println); // mesmo que fazer funcionario -> System.out.println(funcionario)
         });
     }
 
