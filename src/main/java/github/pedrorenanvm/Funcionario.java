@@ -1,6 +1,7 @@
 package github.pedrorenanvm;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.time.LocalDate;
 
@@ -31,6 +32,9 @@ public class Funcionario extends Pessoa {
         this.funcao = funcao;
     }
 
+    public int getIdade(){
+        return LocalDate.now().getYear() - getDataNascimento().getYear();
+    }
     public String formartarSalario(BigDecimal valor){
         DecimalFormat formato = new DecimalFormat("#,###.00");
         return formato.format(valor);
@@ -39,6 +43,10 @@ public class Funcionario extends Pessoa {
     public void aumentarSalario(double percentual){
         this.salario = this.salario.multiply(BigDecimal.valueOf(1 + percentual / 100));
         // consigo receber o valor do aumento, e multiplicar pelo valor do salario resultando no novo salario do funcionario
+    }
+
+    public BigDecimal calcularSalariosMinimosPorFuncionario(){
+        return this.getSalario().divide(new BigDecimal("1212.00"),2, RoundingMode.HALF_UP);
     }
 
     @Override

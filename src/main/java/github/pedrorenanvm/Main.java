@@ -1,12 +1,11 @@
 package github.pedrorenanvm;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.time.LocalDate;
+import java.util.*;
 import java.util.stream.Collectors;
 
+import static github.pedrorenanvm.Main.imprimirFuncionariosOrdemAlfabetica;
 import static github.pedrorenanvm.Pessoa.converterStringParaLocalDate;
 
 public class Main {
@@ -30,7 +29,7 @@ public class Main {
 
 
         // 3.2 – Remover o funcionário “João” da lista.
-        funcionarios.removeIf(funcionario -> funcionario.equals(funcionario.getNome() == "João"));
+        funcionarios.removeIf(funcionario -> funcionario.getNome().equals("João"));
 
         //3.3 – Imprimir todos os funcionários com todas suas informações, sendo que:
         //• informação de data deve ser exibido no formato dd/mm/aaaa;
@@ -50,6 +49,21 @@ public class Main {
         //3.6 – Imprimir os funcionários, agrupados por função.
         imprimirFuncionariosPorFuncaoMap();
 
+
+        //3.8 – Imprimir os funcionários que fazem aniversário no mês 10 e 12.
+        imprimirFuncionariosAniversario();
+
+        //3.9 – Imprimir o funcionário com a maior idade, exibir os atributos: nome e idade.
+        imprimirFuncionarioComMaiorIdade();
+
+        //3.10 – Imprimir a lista de funcionários por ordem alfabética.
+        imprimirFuncionariosOrdemAlfabetica();
+
+        //3.11 – Imprimir o total dos salários dos funcionários.
+        totalDosSalarios();
+
+        //3.12 – Imprimir quantos salários mínimos ganha cada funcionário, considerando que o salário mínimo é R$1212.00.
+        salariosMinimosPorFuncionarios();
 
     }
     public static void imprimirFuncionairosDaLista ( ) {
@@ -74,4 +88,38 @@ public class Main {
         });
     }
 
+    public static void imprimirFuncionariosAniversario(){
+        System.out.println("\nFuncionários aniversariante de outubro e dezembro: ");
+        funcionarios.stream()
+                .filter( funcionario -> funcionario.getDataNascimento().getMonthValue() == 10 ||
+                        funcionario.getDataNascimento().getMonthValue() == 12)
+                .forEach(f -> System.out.println(f));
+    }
+
+    public static void imprimirFuncionarioComMaiorIdade(){
+        Funcionario funcionarioMaisVelho = Collections.min(funcionarios, Comparator.comparing(f -> f.getDataNascimento()));
+        System.out.println("\nFuncionário mais velho: "+funcionarioMaisVelho.getNome()+", idade: "+funcionarioMaisVelho.getIdade());
+    }
+
+    public static void imprimirFuncionariosOrdemAlfabetica(){
+        funcionarios.sort(Comparator.comparing(f -> f.getNome()));
+        System.out.println("\nFuncionários em ordem álfabetica");
+        funcionarios.forEach(System.out::println);
+    }
+
+    public static void totalDosSalarios(){
+        BigDecimal totalSalarios = new BigDecimal("0");
+
+        for(Funcionario funcionario : funcionarios){
+            totalSalarios = totalSalarios.add(funcionario.getSalario());
+        }
+        System.out.println("\nO valor total dos salários dos funcionários é de: R$" + totalSalarios);
+    }
+
+    public static void salariosMinimosPorFuncionarios(){
+        System.out.println("\nQuantidade de salários mínimos que cada funcionário ganha: ");
+        funcionarios.forEach(f -> {
+            System.out.println(f.getNome()+" - salários mínimos: " + f.calcularSalariosMinimosPorFuncionario());
+        });
+    }
 }
